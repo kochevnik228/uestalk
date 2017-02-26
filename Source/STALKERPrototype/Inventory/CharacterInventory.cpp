@@ -17,6 +17,7 @@ UCharacterInventory::UCharacterInventory()
 
 int32 UCharacterInventory::AddItemToInventory(UBaseInventoryObject * Item)
 {
+	::GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("UCharacterInventory::AddItemToInventory(UBaseInventoryObject * Item)"));
 	TotalWeihgt += Item->Weight;
 	ItemsAmount++;
 

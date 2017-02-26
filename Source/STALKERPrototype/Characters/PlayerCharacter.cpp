@@ -4,6 +4,10 @@
 #include "Inventory/BaseInventoryActor.h"
 #include "PlayerCharacter.h"
 
+APlayerCharacter::APlayerCharacter()
+{
+	
+}
 
 void APlayerCharacter::BeginPlay()
 {
@@ -29,7 +33,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
-	PlayerInputComponent->BindAction("UseEvent", IE_Pressed, this, &ABaseHumanCharacter::PreUseItemAction);
+	PlayerInputComponent->BindAction("UseEvent", IE_Pressed, this, &APlayerCharacter::PlayerUseAction);
 
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ABaseHumanCharacter::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ABaseHumanCharacter::EndFire);
@@ -37,5 +41,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void APlayerCharacter::PlayerUseAction()
 {
-	Cast<ABaseInventoryActor>(RayCastForward(300).Actor.Get())->TakeInventoryActor(Inventory);
+	FHitResult Hit = RayCastForward(300);
+	if (Hit.Actor.IsValid())
+	{
+		Cast<ABaseInventoryActor>(Hit.GetActor())->TakeInventoryActor(this->Inventory);
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("APlayerCharacter::PlayerUseAction()"));
+	}
+	//GEngine->AddOnScreenDebugMessage(-1,5,FColor::Emerald, *Cast<ABaseInventoryActor>(RayCastForward(300).GetActor())->GetName());
 }

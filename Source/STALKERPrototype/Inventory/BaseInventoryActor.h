@@ -18,8 +18,8 @@ public:
 
 public: //Components
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
-	UStaticMeshComponent* ItemMesh;
+	UFUNCTION(BlueprintImplementableEvent, Category = Inventory)
+	UStaticMeshComponent* GetItemMesh();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
 	TSubclassOf<UBaseInventoryObject> ItemObjectClass;

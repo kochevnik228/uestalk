@@ -46,16 +46,16 @@ public:
 
 public:
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, Category = Inventary)
 		UCharacterInventory* Inventory;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, Category = Inventary)
 		ABaseWeapon* ActiveWeapon;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, Category = Inventary)
 		UBaseInventoryObject* FirstWeapon;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, Category = Inventary)
 		UBaseInventoryObject* SecondWeapon;
 
 

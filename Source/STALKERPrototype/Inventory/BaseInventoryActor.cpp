@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
 #include "STALKERPrototype.h"
 #include "BaseInventoryActor.h"
 
@@ -9,8 +10,8 @@ ABaseInventoryActor::ABaseInventoryActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
-	ItemMesh->SetupAttachment(RootComponent);
+	//GetItemMesh() = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
+	//ItemMesh->SetupAttachment(RootComponent);
 	//RootComponent = ItemMesh;
 }
 
@@ -18,17 +19,17 @@ ABaseInventoryActor::ABaseInventoryActor()
 void ABaseInventoryActor::BeginPlay()
 {
 	Super::BeginPlay();
-	if (IsValid(ItemObjectClass))
+	if (IsValid(this->ItemObjectClass))
 	{
-		ItemObject = ::NewObject<UBaseInventoryObject>(GetWorld(), ItemObjectClass);
+		this->ItemObject = ::NewObject<UBaseInventoryObject>(this->GetWorld(), this->ItemObjectClass);
 		//ItemMesh->
-		ItemMesh->SetStaticMesh(ItemObject->ItemMesh);
-		ItemMesh->SetMaterial(0, ItemObject->ItemMaterial);
+		this->GetItemMesh()->SetStaticMesh(this->ItemObject->ItemMesh);
+		this->GetItemMesh()->SetMaterial(0, this->ItemObject->ItemMaterial);
 	}
-	else if(IsValid(ItemObject))
+	else if(IsValid(this->ItemObject))
 	{
-		ItemMesh->SetStaticMesh(ItemObject->ItemMesh);
-		ItemMesh->SetMaterial(0, ItemObject->ItemMaterial);
+		this->GetItemMesh()->SetStaticMesh(this->ItemObject->ItemMesh);
+		this->GetItemMesh()->SetMaterial(0, this->ItemObject->ItemMaterial);
 	}
 	UE_LOG(LogTemp, Log, TEXT("Item created: "),*ItemObject->ItemName);
 	
@@ -43,12 +44,23 @@ void ABaseInventoryActor::Tick(float DeltaTime)
 
 bool ABaseInventoryActor::TakeInventoryActor(UCharacterInventory * TargetInventory)
 {
-	if(IsValid(TargetInventory) && IsValid(this->ItemObject))
+	
+	if (TargetInventory)
 	{
-		TargetInventory->AddItemToInventory(this->ItemObject);
-		ItemMesh->DestroyComponent();
-		this->SetLifeSpan(0.5);
-		return true;
+		::GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("IsValid(TargetInventory) == true"));
+		if (this->ItemObject)
+		{
+			TargetInventory->AddItemToInventory(this->ItemObject);
+			GetItemMesh()->DestroyComponent();
+			this->SetLifeSpan(0.5);
+			::GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("IsValid(this->ItemObject) == true"));
+			return true;
+
+		}
+	}
+	else
+	{
+		::GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("IsValid(TargetInventory) && IsValid(this->ItemObject) == false"));
 	}
 
 	return false;

@@ -10,6 +10,8 @@ ABaseHumanCharacter::ABaseHumanCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	Inventory = CreateDefaultSubobject<UCharacterInventory>("Inventory");
+	//Inventory->Activate();
+	//Inventory->
 
 }
 
@@ -17,6 +19,8 @@ ABaseHumanCharacter::ABaseHumanCharacter()
 void ABaseHumanCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	//Inventory = CreateDefaultSubobject<UCharacterInventory>("Inventory");
+	Inventory->Activate();
 	
 }
 

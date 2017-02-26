@@ -14,6 +14,7 @@ class STALKERPROTOTYPE_API APlayerCharacter : public ABaseHumanCharacter
 	GENERATED_BODY()
 public:
 
+	APlayerCharacter();
 
 protected:
 	// Called when the game starts or when spawned

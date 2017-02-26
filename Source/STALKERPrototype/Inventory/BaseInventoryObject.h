@@ -5,6 +5,7 @@
 #include "UObject/NoExportTypes.h"
 #include "BaseInventoryObject.generated.h"
 
+
 UENUM()
 enum EItemType
 {

@@ -3,6 +3,7 @@
 #ifndef __STALKERPROTOTYPE_H__
 #define __STALKERPROTOTYPE_H__
 
+#include "UnrealEngine.h"
 #include "EngineMinimal.h"
 
 

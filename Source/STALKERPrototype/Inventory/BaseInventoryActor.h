@@ -3,9 +3,10 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "BaseInventoryObject.h"
-#include "CharacterInventory.h"
 #include "BaseInventoryActor.generated.h"
+
+class UBaseInventoryObject;
+class UCharacterInventory;
 
 UCLASS()
 class STALKERPROTOTYPE_API ABaseInventoryActor : public AActor
@@ -30,10 +31,16 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable, Category = Inventory)
 	bool TakeInventoryActor(UCharacterInventory* TargetInventory);
+
+	UFUNCTION(BlueprintCallable, Category = Inventory)
+	void Init();
 	
 };

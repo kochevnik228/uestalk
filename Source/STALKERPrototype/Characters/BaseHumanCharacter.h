@@ -5,7 +5,7 @@
 #include "GameFramework/Character.h"
 #include "Inventory/CharacterInventory.h"
 #include "BaseWeapon.h"
-#include "Inventory/BaseInventoryObject.h"
+#include "Inventory/WeaponInventoryObject.h"
 #include "BaseHumanCharacter.generated.h"
 
 UCLASS()
@@ -18,6 +18,9 @@ public:
 	ABaseHumanCharacter();
 
 protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HumanCharacter | Weapon")
+		TSubclassOf<ABaseWeapon> SpawnedWeaponClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HumanCharacter)
 	float MaxHP;
@@ -53,10 +56,10 @@ public:
 		ABaseWeapon* ActiveWeapon;
 
 	UPROPERTY(BlueprintReadWrite, Category = Inventary)
-		UBaseInventoryObject* FirstWeapon;
+		UWeaponInventoryObject* FirstWeapon;
 
 	UPROPERTY(BlueprintReadWrite, Category = Inventary)
-		UBaseInventoryObject* SecondWeapon;
+		UWeaponInventoryObject* SecondWeapon;
 
 
 public: //Базовые функции
@@ -68,19 +71,27 @@ public: //Базовые функции
 	FHitResult RayCastForwardFromLocation(FVector StartLocation, float Lenght);
 
 	//Movement
+	UFUNCTION(BlueprintCallable, Category = Character)
 	void MoveForward(float val);
 
+	UFUNCTION(BlueprintCallable, Category = Character)
 	void MoveRight(float val);
 
 	//Weapon
+	UFUNCTION(BlueprintCallable, Category = Character)
 	void SwitchWeapon(int index);
 
+	UFUNCTION(BlueprintCallable, Category = Character)
 	void StartFire();
 
+	UFUNCTION(BlueprintCallable, Category = Character)
 	void EndFire();
 
 	//Items
+	UFUNCTION(BlueprintCallable, Category = Character)
 	void PreUseItemAction();
 
+	UFUNCTION(BlueprintCallable, Category = Character)
+	virtual void CharacterDied();
 	
 };

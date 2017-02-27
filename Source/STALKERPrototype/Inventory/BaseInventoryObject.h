@@ -6,8 +6,8 @@
 #include "BaseInventoryObject.generated.h"
 
 
-UENUM()
-enum EItemType
+UENUM(Blueprintable)
+enum class EItemType : uint8
 {
 	Weapon,
 	Ammo,
@@ -28,18 +28,27 @@ public:
 
 	UBaseInventoryObject();
 
+	//Тип предмета
+	UPROPERTY(BlueprintReadWrite, Category = "Items")
+	EItemType ItemType;
+
+	//Название предмета
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Items")
 	FString ItemName;
 
+	//Масса предмета
 	UPROPERTY(BlueprintReadWrite, Category = "Items")
 	float Weight;
 
+	//Иконка предмета в инвентаре
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Items")
 	UTexture2D* Image;
 
+	//Модель предмета
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Items")
 	UStaticMesh* ItemMesh;
 
+	//Материал предмета
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Items")
 	UMaterial* ItemMaterial;
 
@@ -47,12 +56,16 @@ public:
 
 public:
 
-	UFUNCTION()
-	AActor* DropItem();
+	//Выбросить предмет на уровень
+	UFUNCTION(BlueprintCallable, Category = "Items")
+	class ABaseInventoryActor* DropItem();
 
-	UFUNCTION()
+	//Добавить предмет в инвентарь
+	UFUNCTION(BlueprintCallable, Category = "Items")
 	int AddToInventory();
 
-	virtual void UseItem();
+	//Использовать предмет (2-клик в инвентаре)
+	UFUNCTION(BlueprintCallable, Category = "Items")
+	virtual void UseItem(class ABaseHumanCharacter * Character);
 
 };

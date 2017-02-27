@@ -3,27 +3,10 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "Inventory/WeaponInventoryObject.h"
 #include "BaseWeapon.generated.h"
 
-USTRUCT()
-struct FAmmoType
-{
-	GENERATED_USTRUCT_BODY()
-public:
-	FAmmoType() {}
-	FAmmoType(int inCal, float inDamage) : Caliber(inCal), Damage(inDamage) {}
-	int Caliber;
-	float Damage;
-	float Mass;
-	FString AmmoName;
-};
 
-UENUM()
-enum EFireMode
-{
-	SingleMode,
-	BurstsMode
-};
 
 UCLASS()
 class STALKERPROTOTYPE_API ABaseWeapon : public AActor
@@ -35,27 +18,17 @@ public:
 	ABaseWeapon();
 
 	class ABaseHumanCharacter* WeaponOwner;
-//------------Base Weapon parameters
-	FString WeaponName;
 
-	EFireMode FireMode;
-
-	bool bCanSelectFireMode;
-
-//-------------Ammo Parameters
-	int8 MaxAmmoInClip;
-
-	TArray<FAmmoType> SupportedAmmoType;
-
-	float ShotCoolDown;
 
 public: //Base components
 
-	UPROPERTY(BlueprintReadWrite, Category = "Weapon")
-	UStaticMeshComponent* WeaponMesh;
+	FWeaponData WeaponData;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Weapon")
-	USceneComponent* Muzzle;
+	UFUNCTION(BlueprintImplementableEvent, Category = Weapon)
+	USkeletalMeshComponent* GetWeaponMesh();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = Weapon)
+	USceneComponent* GetMuzzle();
 
 protected:
 
@@ -67,7 +40,7 @@ protected:
 
 public:
 
-	int AmmoInClip;
+	int32 AmmoInClip;
 
 	FAmmoType LoadedAmmoType;
 protected:
@@ -81,9 +54,15 @@ public:
 
 public:
 
-	bool LoadAmmoToClip(FAmmoType ammotype, int8 Ammo);
+	UFUNCTION(BlueprintCallable, Category = Weapon)
+	bool LoadAmmoToClip(FAmmoType ammotype, int32 Ammo);
 
+	UFUNCTION(BlueprintCallable, Category = Weapon)
 	void ShotOnce();
+
+	UFUNCTION(BlueprintCallable, Category = Weapon)
+	void InitWeapon(FWeaponData & Data);
+	
 
 	FTimerHandle CoolDownTimer;
 	

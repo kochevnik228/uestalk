@@ -2,7 +2,6 @@
 
 #include "STALKERPrototype.h"
 #include "Characters/BaseHumanCharacter.h"
-#include "Kismet/KismetSystemLibrary.h"
 #include "BaseWeapon.h"
 
 
@@ -27,12 +26,12 @@ void ABaseWeapon::Tick(float DeltaTime)
 
 }
 
-bool ABaseWeapon::LoadAmmoToClip(FAmmoType ammotype, int8 Ammo)
+bool ABaseWeapon::LoadAmmoToClip(FAmmoType ammotype, int32 Ammo)
 {
 	bool CanLoad = false;
-	for (int8 i = 0; i < SupportedAmmoType.Num(); i++)
+	for (int8 i = 0; i < WeaponData.SupportedAmmoType.Num(); i++)
 	{
-		if (ammotype.Caliber == SupportedAmmoType[i].Caliber)
+		if (ammotype.Caliber == WeaponData.SupportedAmmoType[i].Caliber)
 		{
 			CanLoad = true;
 			break;
@@ -52,20 +51,19 @@ void ABaseWeapon::ShotOnce()
 	{
 		AmmoInClip--;
 		UE_LOG(LogTemp, Warning, TEXT("Fire once"));
-		//FVector location;
-		FHitResult Hit = WeaponOwner->RayCastForwardFromLocation(Muzzle->GetComponentLocation(), 5000);
+		FHitResult Hit = WeaponOwner->RayCastForwardFromLocation(GetMuzzle()->GetComponentLocation(), 5000);
 		UE_LOG(LogTemp, Warning, TEXT("Ammo:"), *FString::FromInt(AmmoInClip));
-		/*TArray<AActor*> IgnireActors;
-		if (UKismetSystemLibrary::LineTraceSingle(GetWorld(), Muzzle->GetComponentLocation(), location, ETraceTypeQuery::TraceTypeQuery1, false, IgnireActors, EDrawDebugTrace::Type::ForDuration, Hit, true))
-		{
-			if (Cast<ACharacter>(Hit.GetActor()))
-				UE_LOG(LogTemp, Warning, TEXT("Hit to Character"));
-		}
-		if (FireMode == BurstsMode)
-		{
-			GetWorldTimerManager().SetTimer(CoolDownTimer, this, &ABaseWeapon::ShotOnce, ShotCoolDown, false);
-		}*/
 
+	}
+}
+
+void ABaseWeapon::InitWeapon(FWeaponData & Data)
+{
+	WeaponData = Data;
+	if(GetWeaponMesh() && WeaponData.WeaponMesh && WeaponData.WeaponMaterial)
+	{
+		GetWeaponMesh()->SetSkeletalMesh(WeaponData.WeaponMesh);
+		GetWeaponMesh()->SetMaterial(0, WeaponData.WeaponMaterial);
 	}
 }
 

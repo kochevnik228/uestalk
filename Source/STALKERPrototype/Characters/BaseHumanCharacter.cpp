@@ -50,7 +50,17 @@ void ABaseHumanCharacter::MoveRight(float val)
 
 void ABaseHumanCharacter::SwitchWeapon(int index)
 {
-	
+	if (FirstWeapon)
+	{
+		if (ActiveWeapon)
+		{
+			ActiveWeapon->Destroy();
+		}
+
+		ActiveWeapon = GetWorld()->SpawnActor<ABaseWeapon>(SpawnedWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator);
+		ActiveWeapon->InitWeapon(FirstWeapon->WeaponData);
+		ActiveWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	}
 }
 
 void ABaseHumanCharacter::StartFire()
@@ -66,5 +76,10 @@ void ABaseHumanCharacter::EndFire()
 void ABaseHumanCharacter::PreUseItemAction()
 {
 	RayCastForward(600);
+}
+
+void ABaseHumanCharacter::CharacterDied()
+{
+
 }
 

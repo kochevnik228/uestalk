@@ -35,6 +35,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	PlayerInputComponent->BindAction("UseEvent", IE_Pressed, this, &APlayerCharacter::PlayerUseAction);
 
+	PlayerInputComponent->BindAction("SwitchWeapon", IE_Pressed, this, &APlayerCharacter::GetWeapon);
+
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ABaseHumanCharacter::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ABaseHumanCharacter::EndFire);
 }
@@ -48,4 +50,10 @@ void APlayerCharacter::PlayerUseAction()
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("APlayerCharacter::PlayerUseAction()"));
 	}
 	//GEngine->AddOnScreenDebugMessage(-1,5,FColor::Emerald, *Cast<ABaseInventoryActor>(RayCastForward(300).GetActor())->GetName());
+}
+
+void APlayerCharacter::GetWeapon()
+{
+	Cast<UWeaponInventoryObject>(Inventory->GetItemByIndex(0))->UseItem(this);
+	SwitchWeapon(0);
 }
